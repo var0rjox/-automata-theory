@@ -1,0 +1,9 @@
+Programa prueba () 
+inicio
+var a: entero,
+var b: real,
+leer a ;
+escribir b ;
+escribir c;
+mostrar ("Hola mundo") ;
+fin.
