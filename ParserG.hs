@@ -2,50 +2,22 @@ module ParserG where
 import UU_Parsing
 import Scanner
 
-data Seudo = Se String Cuerpo
-     deriving Show
 
-
-pSeudo = (\a b -> Se a b ) <$ pPalClave "Programa" <*> pIdent <* pOpClave "()" <*> pCuerpo 
-
-
-data Cuerpo = Cu Decls Sentencias
-     deriving Show
-
-pCuerpo = (\a b -> Cu a b ) <$ pPalClave "inicio" <*> pDecls <*> pSentencias <* pPalClave "fin" <* pSimbolo "."
-
-data Decls = De Decl Decls
-           | Vacio 
-      deriving Show
-
-pDecls = (\a b -> De a b ) <$> pDecl <* pSimbolo "," <*> pDecls
-      <|>  pSucceed Vacio
-
-data Decl = Dec String Tipo
-      deriving Show
-
-pDecl = (\a b -> Dec a b) <$ pPalClave "var" <*> pIdent <* pSimbolo ":" <*> pTipo
-
-data Tipo = T1
-          | T2
-      deriving Show
-
-pTipo = T1 <$ pPalClave "entero"
-      <|> T2 <$ pPalClave "real"
-
-data Sentencias = Sent Sentencia Sentencias
-                | VacioS
+data Etiquetas = Et Etiquetas
+               | Et1 Etiquetas Etiquetas
+               | Et2 Etiquetas
+               | Et3 Etiquetas
+               | Et4 String
+               | Et5 String
+               | Et6 String
+               | VacioS
           deriving Show
 
-pSentencias = (\a b -> Sent a b ) <$> pSentencia <* pSimbolo ";" <*> pSentencias
-           <|> pSucceed VacioS
-
-data Sentencia = Sente String
-               | Sente1 String
-               | Sente2 String
-          deriving Show
-
-pSentencia = (\a -> Sente a ) <$ pPalClave "leer" <*> pIdent
-      <|>  (\a -> Sente1 a ) <$ pPalClave "escribir" <*> pIdent
-      <|>  (\a -> Sente2 a ) <$ pPalClave "mostrar" <* pSimbolo "(" <*> pCadena <* pSimbolo ")"
-
+pEtiquetas = Et <$ pOpClave "<!" <* pPalClave"doctype html" <* pSimbolo ">" <*> pEtiquetas
+      <|>  (\a b -> Et1 a b) <$ pSimbolo "<" <* pPalClave "html" <* pSimbolo ">" <*> pEtiquetas <*> pEtiquetas <* pOpClave "</" <* pPalClave "html" <* pSimbolo ">"
+      <|>  (\a -> Et2 a) <$ pSimbolo "<" <* pPalClave "head" <* pSimbolo ">" <*> pEtiquetas <* pOpClave "</" <* pPalClave "head" <* pSimbolo ">"
+      <|>  (\a -> Et3 a) <$ pSimbolo "<" <* pPalClave "body" <* pSimbolo ">" <*> pEtiquetas <* pOpClave "</" <* pPalClave "body" <* pSimbolo ">" -- checar la parte recursiva de llamada a estos elementos
+      <|>  (\a -> Et4 a) <$ pSimbolo "<" <* pPalClave "meta" <* pPalClave "charset" <* pSimbolo "=" <*> pCadena <* pOpClave "</" <* pPalClave "head" <* pSimbolo ">"
+      <|>  (\a -> Et5 a) <$ pSimbolo "<" <* pPalClave "title" <* pSimbolo ">" <*> pIdent <* pOpClave "</" <* pPalClave "title" <* pSimbolo ">"
+      <|> (\a -> Et6 a) <$ pSimbolo "<" <* pPalClave "p" <* pSimbolo ">" <*> pCadena <* pOpClave "</" <* pPalClave "p" <* pSimbolo ">"
+      <|> pSucceed VacioS

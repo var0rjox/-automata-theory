@@ -5,15 +5,15 @@ import ParserG
 
 
 
-palabrasClave = [ "Programa","inicio","fin","mostrar","leer","escribir","var","entero","real"]
-operadores = ["()"]
-opeBasicos = "()"
-simbolos = ";.:,"
+palabrasClave = [ "doctype html","html","head","meta","charset","title","body","p"]
+operadores = ["<!","/>","</"]
+opeBasicos = "="
+simbolos = "</>!"
 
 main = do 
        putStr "Nombre del Archivo: "
        nomF <- getLine
        tokens <-  scanner palabrasClave operadores simbolos opeBasicos nomF
-       out <- parseIO pSeudo tokens
+       out <- parseIO pEtiquetas tokens
        putStr (show tokens)
        putStr (show  out)
