@@ -3,34 +3,46 @@ module ParserG where
 import UU_Parsing
 import Scanner
 
-data Etiquetas = Et Etiquetas
-                | Et1 Etiquetas Etiquetas
-                | Et2 Etiquetas
-                | Et3 Etiquetas
-                | Et4 String
-                | Et5 String
-                | Et6 String
-                | VacioS
-              deriving Show
-pDoctype = Et <$ pOpClave "<!" <* pPalClave "doctype html" <* pSimbolo ">" <*> pHtml
+data OpEtiquetas = Opmenor
+           | Opmenorcierre
+           | Opmayor
+           | Opmayorcierre
+           | Opmenordistinto
+       deriving Show
 
-pHtml = (\a b -> Et1 a b) <$ pSimbolo "<" <* pPalClave "html" <* pSimbolo ">" <*> pHead <*> pBody <* pOpClave "</" <* pPalClave "html" <* pSimbolo ">"
+data Seudo = Seu HTML
+            deriving Show
+data HTML = Estructura Cabeza Body
+            deriving Show
+data Cabeza = Cab EtiquetasCabeza
+            deriving Show
+data EtiquetasCabeza =  EtiquetaCabeza1 String
+          | EtiquetaCabeza2 String
+        deriving Show
+data Body = Bod EtiquetasBody
+            deriving Show
+data EtiquetasBody = EtiquetaBody1 String 
+        deriving Show
 
-pHead = (\a -> Et2 a) <$ pSimbolo "<" <* pPalClave "head" <* pSimbolo ">" <*> (pMeta <|> pTitle) <* pOpClave "</" <* pPalClave "head" <* pSimbolo ">"
+pSeudo = (\a -> Seu a) <$ pOpEtiquetas <* pPalClave "doctype html" <*> pOpEtiquetas <*> pHtml
 
-pBody = (\a -> Et3 a) <$ pSimbolo "<" <* pPalClave "body" <* pSimbolo ">" <*> pParrafo <* pOpClave "</" <* pPalClave "body" <* pSimbolo ">"
 
-pMeta = (\a -> Et4 a) <$ pSimbolo "<" <* pPalClave "meta" <* pPalClave "charset" <* pSimbolo "=" <*> pCadena <* pOpClave "</" <* pPalClave "head" <* pSimbolo ">"
+pHtml = (\a b -> Estructura a b) <$ pOpEtiquetas <* pPalClave "html" <*> pOpEtiquetas <*> pCabeza <*> pBody <*> pOpEtiquetas <* pPalClave "html" <*> pOpEtiquetas
 
-pTitle = (\a -> Et5 a) <$ pSimbolo "<" <* pPalClave "title" <* pSimbolo ">" <*> pIdent <* pOpClave "</" <* pPalClave "title" <* pSimbolo ">"
 
-pParrafo = (\a -> Et6 a) <$ pSimbolo "<" <* pPalClave "p" <* pSimbolo ">" <*> pCadena <* pOpClave "</" <* pPalClave "p" <* pSimbolo ">"
+pCabeza = (\a -> Cab a) <$ pOpEtiquetas <* pPalClave "head" <*> pOpEtiquetas <*> pEtiquetasCabeza <*> pOpEtiquetas <* pPalClave "head" <*> pOpEtiquetas
 
-pEtiquetas = pDoctype
-          <|> pHtml
-          <|> pHead
-          <|> pBody
-          <|> pMeta
-          <|> pTitle
-          <|> pParrafo
-          <|> pSucceed VacioS
+
+pBody = (\a -> Bod a) <$ pOpEtiquetas <* pPalClave "body" <*> pOpEtiquetas <*> pEtiquetasBody <*> pOpEtiquetas <* pPalClave "body" <*> pOpEtiquetas
+
+
+pEtiquetasCabeza = (\a -> EtiquetaCabeza1 a) <$ pOpEtiquetas <* pPalClave "meta" <* pPalClave "charset" <* pSimbolo "=" <*> pCadena <*> pOpEtiquetas
+     <|> (\a -> EtiquetaCabeza2 a) <$ pOpEtiquetas <* pPalClave "title" <*> pOpEtiquetas <*> pIdent <*> pOpEtiquetas <* pPalClave "title" <*> pOpEtiquetas
+
+pEtiquetasBody = (\a -> EtiquetaBody1 a) <$ pOpEtiquetas <* pPalClave "p" <*> pOpEtiquetas <*> pCadena <*> pOpEtiquetas <* pPalClave "p" <*> pOpEtiquetas
+
+pOpEtiquetas = Opmenor <$ pSimbolo "<"
+       <|> Opmenorcierre <$ pOpClave "</"
+       <|> Opmayor <$ pSimbolo ">"
+       <|> Opmayorcierre <$ pOpClave "/>" 
+       <|> Opmenordistinto <$ pOpClave "<!"
