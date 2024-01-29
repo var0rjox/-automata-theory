@@ -1,0 +1,74 @@
+{
+type Lista = [String]
+
+fVerificar a t@(x:xs) | a `elem` t = True 
+                      | otherwise = False 
+
+recorrido t@(x:xs) (y:ys) = fVerificar y t && recorrido t ys 
+recorrido [] (y:ys) = False 
+recorrido t@(x:xs) [] = True 
+
+
+fencontrar y t@(x:xs) | y `elem` t = [] 
+                      | otherwise = y:[] 
+
+captura t@(x:xs) (y:ys) = fencontrar y t ++ captura t ys 
+captura [] (y:ys) = []
+captura t@(x:xs) [] = [] 
+
+-- Cuantas variables son declaradas contar: 
+
+}
+
+DATA Prog | P1 String Decls Intrs  
+          
+DATA Decls | De Decl Decls
+           | Vacio 
+      
+DATA Decl | Dec String Tipo
+      
+DATA Intrs | Is1 Inst Intrs  
+           | Is2 
+          
+DATA Inst | I1 String   
+          | I2 String
+         
+DATA Tipo | T1
+          | T2
+
+ATTR Prog  [  |  | r: Lista d:Lista u:Lista con:Int]
+ATTR Decls [  |  | d:Lista con:Int] 
+ATTR Decl  [  |  | d:Lista con:Int]
+ATTR Intrs [  |  | u:Lista ]  
+ATTR Inst  [  |  | u:Lista ] 
+
+SEM Prog 
+| P1  lhs.r = captura @decls.d @intrs.u
+      lhs.d = @decls.d   
+      lhs.u = @intrs.u
+      lhs.con = @decls.con   
+      
+
+SEM Decls 
+| De lhs.d = @decl.d ++ @decls.d
+     lhs.con = @decl.con + @decls.con
+
+| Vacio lhs.d = [] 
+        lhs.con = 0
+
+SEM Decl 
+| Dec lhs.d = @string:[] 
+      lhs.con = 1
+
+SEM Intrs 
+| Is1 lhs.u = @inst.u ++ @intrs.u  
+| Is2 lhs.u = []
+          
+SEM Inst 
+| I1 lhs.u = @string:[]    
+| I2 lhs.u = @string:[] 
+         
+
+
+
+

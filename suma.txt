@@ -1,0 +1,27 @@
+Programa  suma 
+      var a: entero;
+      var b:entero;
+      var c:entero;
+            
+      leer a ; 
+      leer b ; 
+      leer c;
+      escribir a ;
+      escribir x ;  
+     
+finPrograma
+
+inicio{
+  a,a,a,a;
+  b,b,b,b;
+  c,c,c;
+}
+
+
+Programa -> inicio "{" Declaraciones "}"
+Declaraciones -> Strings "," Declaraciones ";"
+                | Vacio
+
+Strings -> "a/../z"
+
+

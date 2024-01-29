@@ -1,0 +1,72 @@
+{
+--funciones de husg
+type Lista = [String]
+
+-- verifica e elemento si parte de una lista 
+-- me devuelve un bool 
+
+fVerificar a t@(x:xs) | a `elem` t = True 
+                      | otherwise = False 
+
+recorrido t@(x:xs) (y:ys) = fVerificar y t && recorrido t ys 
+recorrido [] (y:ys) = False 
+recorrido t@(x:xs) [] = True 
+
+
+
+--Comentarios
+--1.- Condicion de Contexto - Variable usada tenga que ser antes declarada. 
+--2.- Condicion de Contexto - Variables no pueden ser dos veces declara. 
+}
+
+DATA Prog | P1 String Decls Intrs  
+          
+DATA Decls | De Decl Decls
+           | Vacio 
+      
+DATA Decl | Dec String Tipo
+      
+DATA Intrs | Is1 Inst Intrs  
+           | Is2 
+          
+DATA Inst | I1 String   
+          | I2 String
+         
+DATA Tipo | T1
+          | T2
+
+{
+--Esta parte uno declara las variables atribuidas a usar 
+--para resolver el problema. 
+}
+
+ATTR Prog  [  |  | r: bool d:Lista u:Lista]
+ATTR Decls [  |  | d:Lista ] 
+ATTR Decl  [  |  | d:Lista ]
+ATTR Intrs [  |  | u:Lista ]  
+ATTR Inst  [  |  | u:Lista ] 
+
+SEM Prog 
+| P1  lhs.r = recorrido @decls.d @intrs.u
+      lhs.d = @decls.d   
+      lhs.u = @intrs.u
+
+SEM Decls 
+| De lhs.d = @decl.d ++ @decls.d
+| Vacio lhs.d = [] 
+      
+SEM Decl 
+| Dec lhs.d = @string:[] 
+      
+SEM Intrs 
+| Is1 lhs.u = @inst.u ++ @intrs.u  
+| Is2 lhs.u = []
+          
+SEM Inst 
+| I1 lhs.u = @string:[]    
+| I2 lhs.u = @string:[] 
+         
+
+
+
+

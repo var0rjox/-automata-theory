@@ -1,0 +1,35 @@
+Prog -> "Programa" Id  Intrs  "finPrograma" 
+
+Intrs -> Inst ";" Intrs
+      | Vacio     
+
+Inst -> "leer" Id
+      | "escribir" Id   
+
+
+1.- paso 1. reconocer terminales o alfabeto de mi gramtica
+
+"Programa"
+"finPrograma"
+";"
+"leer" 
+"escribir"
+
+2.- paso 2 creo mi main programa principal, unir scanner - lexico - gramitica
+
+--
+
+3.- paso 3. transforamcion gramtica concreta a una gramtica abstracta
+
+data.
+
+4.- paso 4. creo los parser de tipos. 
+
+5.- paso 5. uno el main con mi parser.
+voy main
+
+6.- compiladro winhusg.exe -98
+
+7.- condicon contexto. contar las varibles leidas
+
+-- 3 

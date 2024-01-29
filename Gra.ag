@@ -1,0 +1,37 @@
+{type Lista = [String]
+fVerificar a t@(x:xs) | a `elem` t = True 
+                      | otherwise = False 
+
+recorrido t@(x:xs) (y:ys) = fVerificar y t && recorrido t ys 
+recorrido [] (y:ys) = False 
+recorrido t@(x:xs) [] = True                       
+                    
+}
+DATA Prog | Prog1 String A  
+
+DATA A | A1 Inst A  
+       | A2
+
+DATA Inst | Inst1 String   
+          | Inst2 String
+
+ATTR Prog [|| resul: Bool]
+
+ATTR A [|| d: Lista u: Lista]
+
+ATTR Inst [|| d: Lista u: Lista]
+               
+SEM Prog 
+ | Prog1 lhs.resul = recorrido @a.d @a.u 
+     
+SEM A 
+| A1 lhs.u = @inst.u ++ @a.u
+     lhs.d = @inst.d ++ @a.d
+| A2 lhs.u = []
+     lhs.d = []
+
+SEM Inst 
+| Inst1 lhs.u =  []  
+        lhs.d = @string: []  
+| Inst2 lhs.u = @string: []
+        lhs.d =  []   
