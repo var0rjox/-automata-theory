@@ -1,12 +1,13 @@
 module ParserG where
 import UU_Parsing
 import Scanner
+import Atrib
 
 -- Definición de tipos de datos para representar la estructura del programa
 data Prog = Prog Cuerpo
        deriving Show
 
-pProg = Prog <$ pPalClave "Codigo" <* pPalClave "Foltran" <* pSimbolo "!" <*> pCuerpo
+pProg = Prog <$ pPalClave "include" <* pSimbolo "<" <* pPalClave "stdio" <* pSimbolo "." <* pPalClave "h" <* pSimbolo ">" <*> pMetodos <*> pMain
 
 data Cuerpo = Body Declaraciones Asignacion Condicional String
        deriving Show

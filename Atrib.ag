@@ -1,0 +1,94 @@
+{
+type Lista = [String]
+}
+
+DATA Prog | P1 Metodos Main
+
+DATA Main | M1 Tipo Instancias Funciones
+
+DATA Metodo | Met1 Instancia Instancia Instancia CuerpoMet
+
+DATA Metodos | Mets Metodo Metodos
+             | VacioMet
+
+DATA Instancia | I1 Tipo String
+
+DATA Instancias | Is1 Instancia Instancias
+                | VacioInstancias
+
+DATA Funcion | Fun1 String Mostrar 
+             | Fun2 String
+             | Fun3 String
+             | Fun4 Tipo String String String String
+
+DATA Funciones | Funs1 Funcion Funciones
+
+DATA Mostrar | Mos1 String
+             | VacioMos
+
+DATA CuerpoMet | Crp1  Expresion
+               | Crp2 Expresion Funciones Funciones
+
+DATA Expresion | Exp1 Relacion A
+
+DATA Relacion | Rela1 Terminos B
+
+DATA A | A1 OpLog Expresion
+       | AVacio
+
+DATA B | B1 SimOps Relacion
+       | BVacio
+
+DATA C | C1 SimpOps Terminos
+
+DATA SimOps | Smas
+            | Smenos
+            | Smul
+            | Sdiv
+
+DATA Fr  | Fr Expresion
+         | Fr1 String
+         | Fr2 Int 
+
+DATA Relacion | Rel1 Terminos B
+
+DATA Terminos | Ter1 Fr C
+
+DATA OpLog | Opmenor
+           | Opmayor
+           | Opmayorigual
+           | Opmenorigual
+           | Opdistinto
+           | Opigual
+
+DATA SimpOps | Smas
+            | Smenos
+            | Smul
+            | Sdiv
+         
+DATA Tipo | T1
+          | T2
+
+
+ATTR Prog  [  |  | d:Lista ]
+ATTR Decls [  |  | d:Lista ] 
+ATTR Decl  [  |  | d:Lista ]
+
+
+SEM Prog 
+| P1  lhs.d = @decls.d   
+       
+
+SEM Decls 
+| De lhs.d = @decl.d ++ @decls.d
+| Vacio lhs.d = [] 
+      
+SEM Decl 
+| Dec lhs.d = @string:[] 
+      
+
+         
+
+
+
+

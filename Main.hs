@@ -1,6 +1,7 @@
 module Main where
-import UU_Parsing
 import Scanner
+import UU_Parsing
+import Atrib
 import ParserG
 
 

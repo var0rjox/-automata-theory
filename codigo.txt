@@ -1,16 +1,40 @@
-Codigo Foltran!
-begin
-int a;
-int b;
-int c;
-double d;
-a = 4;
-b = 5;
-c = 6;
-d = (a + b) - c;
-if (a > b) {
-d = a * b;
+#include <stdio.h>
+
+int sumar(int numero1, int numero2) {
+    return numero1 + numero2;
+}
+int restar(int numero1 , int numero2){
+  return numero1 - numero2;
+}
+int multiplicar (int numero1 , int numero2){
+  return numero1 * numero2;
 }
 
-return d;
-end.
+float dividir (int numero1 , int numero2){
+  if (numero2 <= 0){
+    printf("el 2do numero es menor o igual a cero");
+  }else{
+    return numero1 / numero2;
+  }
+}
+
+int main() {
+    
+    int num1, num2;
+
+    printf("Ingrese el primer número: ");
+    scanf(num1);
+
+    printf("Ingrese el segundo número: ");
+    scanf(num2);
+    
+    int resultadoSum = sumar(num1, num2);
+    int resultadoRes = restar(num1, num2);
+    int resultadoMul = multiplicar(num1, num2);
+    float resultadoDiv = dividir(num1, num2);
+    printf("La suma de los 2 numeros es :", resultadoSum);
+    printf("La resta del 1ero con el 2do numero es :", resultadoRes);
+    printf("La multiplicacion del 1ero con el 2do numero es :", resultadoMul);
+    printf("La division del 1ero con el 2do numero es : ", resultadoDiv);
+    return 0;
+}
