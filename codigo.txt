@@ -1,0 +1,16 @@
+Codigo Foltran!
+begin
+int a;
+int b;
+int c;
+double d;
+a = 4;
+b = 5;
+c = 6;
+d = (a + b) - c;
+if (a > b) {
+d = a * b;
+}
+
+return d;
+end.
