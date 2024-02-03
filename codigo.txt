@@ -20,7 +20,8 @@ float dividir (int numero1 , int numero2){
 
 int main() {
     
-    int num1 , num2 ;
+    int num1 ;
+    int num2 ;
 
     printf("Ingrese el primer número: ") ;
     scanf(num1) ;

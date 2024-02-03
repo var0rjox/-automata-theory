@@ -34,11 +34,11 @@ pInstancias = (\a b -> Instancias a b ) <$> pInstancia <* pSimbolo ";" <*> pInst
   <|>  pSucceed VacioIns
 
 data CuerpoMet = CuerpoM Expresion 
-        | CuerpoMCondicional Expresion Funciones Funciones
+        | CuerpoMCondicional Expresion Funciones Expresion -- if (Expresion) Funciones else return Expresion
        deriving Show
        
 pCuerpoMet = (\a -> CuerpoM a ) <$ pPalClave "return" <*> pExpresion <* pSimbolo ";"
-  <|> (\a b c -> CuerpoMCondicional a b c ) <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pFunciones <* pSimbolo "}" <* pPalClave "else" <* pSimbolo "{" <*> pFunciones <* pSimbolo "}"
+  <|> (\a b c -> CuerpoMCondicional a b c ) <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pFunciones <* pSimbolo "}" <* pPalClave "else" <* pSimbolo "{" <* pPalClave "return" <*> pExpresion <* pSimbolo ";" <* pSimbolo "}"
 
 data Funcion = Funcion1 String Mostrar --printf
         | Funcion2 String -- scanf

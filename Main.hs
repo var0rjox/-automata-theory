@@ -5,7 +5,7 @@ import UU_Parsing
 import ParserG
 
 
-palabrasClave = ["if","else","float","include","studio","h","int","main","printf","scanf","return"]
+palabrasClave = ["if","else","float","include","stdio","h","int","main","printf","scanf","return"]
 
 operadores = ["<=",">=","!=","()"]
 opeBasicos = "+-*/=()<>!#"
