@@ -1,44 +1,81 @@
 module ParserG where
 import UU_Parsing
 import Scanner
-import Atrib
+-- import Atrib
 
 -- Definición de tipos de datos para representar la estructura del programa
-data Prog = Prog Cuerpo
+data Prog = Prog Metodos Main
        deriving Show
 
-pProg = Prog <$ pPalClave "include" <* pSimbolo "<" <* pPalClave "stdio" <* pSimbolo "." <* pPalClave "h" <* pSimbolo ">" <*> pMetodos <*> pMain
-
-data Cuerpo = Body Declaraciones Asignacion Condicional String
+pProg = Prog <$ pSimbolo "#" <* pPalClave "include" <* pSimbolo "<" <* pPalClave "stdio" <* pSimbolo "." <* pPalClave "h" <* pSimbolo ">" <*> pMetodos <*> pMain
+-- Completo pProg y Prog
+data Metodos = Metds Metodo Metodos
+       | VacioMet
        deriving Show
 
-pCuerpo = (\a b c -> Body a b c ) <$ pPalClave "begin" <*> pDeclaraciones <*> pAsignacion <*> pCondicional <* pPalClave "return" <*> pIdent <* pSimbolo ";" <* pPalClave "end" <* pSimbolo "."
+pMetodos = (\a b -> Metds a b ) <$> pMetodo <*> pMetodos
+  <|>  pSucceed VacioMet
 
-data Tipo = T1 
+data Metodo = Metd Instancia Instancia Instancia CuerpoMet
+       deriving Show
+
+pMetodo = (\a b c d -> Metd a b c d ) <$> pInstancia <* pSimbolo "(" <*> pInstancia <* pSimbolo "," <*> pInstancia <* pSimbolo ")"  <* pSimbolo "{" <*> pCuerpoMet <* pSimbolo "}"
+
+data Instancia = Instancia Tipo String
+       deriving Show
+
+pInstancia = (\a b -> Instancia a b ) <$> pTipo <*> pIdent
+
+data Instancias = Instancias Instancia Instancias
+        | VacioIns
+       deriving Show
+
+pInstancias = (\a b -> Instancias a b ) <$> pInstancia <* pSimbolo ";" <*> pInstancias
+  <|>  pSucceed VacioIns
+
+data CuerpoMet = CuerpoM Expresion 
+        | CuerpoMCondicional Expresion Funciones Funciones
+       deriving Show
+       
+pCuerpoMet = (\a -> CuerpoM a ) <$ pPalClave "return" <*> pExpresion <* pSimbolo ";"
+  <|> (\a b c -> CuerpoMCondicional a b c ) <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pFunciones <* pSimbolo "}" <* pPalClave "else" <* pSimbolo "{" <*> pFunciones <* pSimbolo "}"
+
+data Funcion = Funcion1 String Mostrar --printf
+        | Funcion2 String -- scanf
+        | Funcion3 Instancia String String String -- llamada a funcion
+       deriving Show
+
+pFuncion = (\a b -> Funcion1 a b ) <$ pPalClave "printf" <* pSimbolo "(" <*> pCadena <*> pMostrar <* pSimbolo ")"
+  <|> (\a -> Funcion2 a ) <$ pPalClave "scanf" <* pSimbolo "(" <*> pIdent <* pSimbolo ")"
+  <|> (\a b c d -> Funcion3 a b c d ) <$> pInstancia <* pSimbolo "=" <*> pIdent <* pSimbolo "(" <*> pIdent <* pSimbolo "," <*> pIdent <* pSimbolo ")"
+
+data Mostrar = Mostrar String -- , pIdent
+        | MostrarVacio
+       deriving Show
+
+pMostrar = (\a -> Mostrar a ) <$ pSimbolo "," <*> pIdent
+  <|>  pSucceed MostrarVacio
+
+data Funciones = Funciones Funcion Funciones
+       | VacioFuncs
+       deriving Show
+
+pFunciones = (\a b -> Funciones a b ) <$> pFuncion  <* pSimbolo ";" <*> pFunciones
+  <|>  pSucceed VacioFuncs
+
+data Main = Main Instancias Funciones Int
+       deriving Show
+
+pMain = Main <$ pPalClave "int" <* pPalClave "main" <* pOpClave "()" <* pSimbolo "{" <*> pInstancias <*> pFunciones <* pPalClave "return" <*> pInt <* pSimbolo ";" <* pSimbolo "}"
+---- Modificaciones de practicas anteriores :
+
+data Tipo = T1
           | T2
       deriving Show
 
 pTipo = T1 <$ pPalClave "int"
-    <|> T2 <$ pPalClave "double"
+    <|> T2 <$ pPalClave "float"
 
-data Declaraciones = Declars Tipo String Declaraciones
-       | VacioS
-       deriving Show
-
-pDeclaraciones = (\a b c -> Declars a b c ) <$> pTipo <*> pIdent <* pSimbolo ";" <*> pDeclaraciones
-  <|>  pSucceed VacioS
-
-data Asignacion = Asignacions String Expresion Asignacion
-        | VacioAsig
-       deriving Show
-
-pAsignacion = (\a b -> Asignacions a b ) <$> pIdent <* pSimbolo "=" <*> pExpresion <* pSimbolo ";" <*> pAsignacion
-  <|>  pSucceed VacioAsig
-
-data Condicional = Condi Expresion Asignacion
-       deriving Show
-
-pCondicional = (\a -> Condi a ) <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pAsignacion <* pSimbolo "}"
 
 --- cosas para reusar
 
@@ -73,9 +110,6 @@ data OpLog = Opmenor
            | Opmayorigual
            | Opmenorigual
            | Opdistinto
-           | Opigual
-           | OAnd
-           | OOr
        deriving Show
 
 data SimOps = Smas
@@ -110,9 +144,7 @@ pOpLog = Opmenor <$ pSimbolo "<"
        <|> Opmayor <$ pSimbolo ">"
        <|> Opmayorigual <$ pOpClave ">=" 
        <|> Opdistinto <$ pOpClave "!="
-       <|> Opigual <$ pSimbolo "="
-       <|> OAnd <$ pPalClave "Y"
-       <|> OOr <$ pPalClave "O"
+
 
 pSimOps = Smas <$ pSimbolo "+"
     <|> Smenos <$ pSimbolo "-"

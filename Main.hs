@@ -1,15 +1,15 @@
 module Main where
 import Scanner
 import UU_Parsing
-import Atrib
+-- import Atrib
 import ParserG
 
 
-palabrasClave = ["Codigo","Foltran","begin","int","double","if","return","end","mod","Y","O"]
+palabrasClave = ["if","else","float","include","studio","h","int","main","printf","scanf","return"]
 
-operadores = ["<=",">=","!="]
-opeBasicos = "+-*/=()<>!"
-simbolos = "{};:,.\""
+operadores = ["<=",">=","!=","()"]
+opeBasicos = "+-*/=()<>!#"
+simbolos = "{};,.\""
 
 main = do 
        putStr "Nombre del Archivo: "
