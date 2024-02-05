@@ -1,14 +1,48 @@
 {
 type Lista = [String]
+type Instancia1 = Instancia
+type Instancia2 = Instancia
 }
 
-DATA Prog | P1 Metodos Main
+DATA Prog | Prog Metodos Main
 
-DATA Main | M1 Tipo Instancias Funciones
+DATA Metodos | Metds Metodo Metodos
+             | VacioMet
 
-DATA Metodo | Met1 Instancia Instancia Instancia CuerpoMet
+DATA Metodo | Metd Instancia Instancia1 Instancia2 CuerpoMet
 
-DATA Metodos | Mets Metodo Metodos
+DATA Instancia | Instancia Tipo String
+
+DATA Instancias | Instancias Instancia Instancia1
+
+DATA CuerpoMet | CuerpoM Expresion
+               | CuerpoMCondicional Expresion Funciones Expresion
+
+DATA  Funcion | Funcion1 String Mostrar
+              | Funcion2 String
+              | Funcion3 Instancia String String String
+
+DATA Mostrar | Mostrar String
+             | MostrarVacio
+DATA Funciones | Funciones Funcion Funciones
+               | VacioFuncs
+
+DATA Main | Main Instancias Funciones Int
+
+DATA Tipo | T1
+          | T2
+
+DATA Expresion | Expresion Relacion a
+
+DATA A | A Oplog Expresion
+       | AVacio
+
+DATA Relacion | Relacion Terminos B
+
+DATA B | B SimpOps Relacion
+      
+
+DATA Metodos | Metds Metodo Metodos
              | VacioMet
 
 DATA Instancia | I1 Tipo String
