@@ -27,7 +27,7 @@ data Instancia = Instancia Tipo String
 pInstancia = (\a b -> Instancia a b ) <$> pTipo <*> pIdent
 
 data Instancias = Instancias Instancia Instancias
-        | VacioIns
+        | VacioInst
        deriving Show
 
 pInstancias = (\a b -> Instancias a b ) <$> pInstancia <* pSimbolo ";" <*> pInstancias

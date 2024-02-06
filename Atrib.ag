@@ -2,6 +2,9 @@
 type Lista = [String]
 type Instancia1 = Instancia
 type Instancia2 = Instancia
+type String1 = String
+type String2 = String
+type String3 = String
 }
 
 DATA Prog | Prog Metodos Main
@@ -14,16 +17,18 @@ DATA Metodo | Metd Instancia Instancia1 Instancia2 CuerpoMet
 DATA Instancia | Instancia Tipo String
 
 DATA Instancias | Instancias Instancia Instancia1
+                | VacioInst
 
 DATA CuerpoMet | CuerpoM Expresion
                | CuerpoMCondicional Expresion Funciones Expresion
 
-DATA  Funcion | Funcion1 String Mostrar
+DATA Funcion | Funcion1 String Mostrar
               | Funcion2 String
-              | Funcion3 Instancia String String String
+              | Funcion3 Instancia String String1 String2
 
 DATA Mostrar | Mostrar String
              | MostrarVacio
+
 DATA Funciones | Funciones Funcion Funciones
                | VacioFuncs
 
@@ -32,7 +37,7 @@ DATA Main | Main Instancias Funciones Int
 DATA Tipo | T1
           | T2
 
-DATA Expresion | Expresion Relacion a
+DATA Expresion | Expresion Relacion A
 
 DATA A | A Oplog Expresion
        | AVacio
@@ -40,53 +45,16 @@ DATA A | A Oplog Expresion
 DATA Relacion | Relacion Terminos B
 
 DATA B | B SimpOps Relacion
-      
+        | BVacio
 
-DATA Metodos | Metds Metodo Metodos
-             | VacioMet
+DATA C | C SimpOps Terminos
+        | CVacio
 
-DATA Instancia | I1 Tipo String
+DATA Terminos | Terminos Fr C
 
-DATA Instancias | Is1 Instancia Instancias
-                | VacioInstancias
-
-DATA Funcion | Fun1 String Mostrar 
-             | Fun2 String
-             | Fun3 String
-             | Fun4 Tipo String String String String
-
-DATA Funciones | Funs1 Funcion Funciones
-
-DATA Mostrar | Mos1 String
-             | VacioMos
-
-DATA CuerpoMet | Crp1  Expresion
-               | Crp2 Expresion Funciones Funciones
-
-DATA Expresion | Exp1 Relacion A
-
-DATA Relacion | Rela1 Terminos B
-
-DATA A | A1 OpLog Expresion
-       | AVacio
-
-DATA B | B1 SimOps Relacion
-       | BVacio
-
-DATA C | C1 SimpOps Terminos
-
-DATA SimOps | Smas
-            | Smenos
-            | Smul
-            | Sdiv
-
-DATA Fr  | Fr Expresion
-         | Fr1 String
-         | Fr2 Int 
-
-DATA Relacion | Rel1 Terminos B
-
-DATA Terminos | Ter1 Fr C
+DATA Fr | Fr Expresion
+        | Fr1 String
+        | Fr2 Int
 
 DATA OpLog | Opmenor
            | Opmayor
@@ -96,33 +64,65 @@ DATA OpLog | Opmenor
            | Opigual
 
 DATA SimpOps | Smas
-            | Smenos
-            | Smul
-            | Sdiv
-         
-DATA Tipo | T1
-          | T2
+             | Smenos
+             | Smul
+             | Sdiv
 
 
-ATTR Prog  [  |  | d:Lista ]
-ATTR Decls [  |  | d:Lista ] 
-ATTR Decl  [  |  | d:Lista ]
-
+ATTR Prog  [  |  | d:Lista u:Lista ]
+ATTR Metodos [  |  | d:Lista ]
+ATTR Metodo [  |  | d:Lista ]
+ATTR Instancia [  |  | d:Lista ]
+ATTR Instancias [  |  | d:Lista ]
+ATTR CuerpoMet [  |  | d:Lista ]
+ATTR Funcion [  |  | d:Lista ]
+ATTR Mostrar [  |  | d:Lista ]
+ATTR Funciones [  |  | d:Lista ]
+ATTR Main [  |  | d:Lista ]
+ATTR Tipo [  |  | d:Lista ]
+ATTR Expresion [  |  | d:Lista ]
+ATTR A [  |  | d:Lista ]
+ATTR B [  |  | d:Lista ]
+ATTR C [  |  | d:Lista ]
+ATTR Relacion [  |  | d:Lista ]
+ATTR Terminos [  |  | d:Lista ]
+ATTR Fr [  |  | d:Lista ]
+ATTR OpLog [  |  | d:Lista ]
+ATTR SimpOps [  |  | d:Lista ]
 
 SEM Prog 
-| P1  lhs.d = @decls.d   
-       
+| Prog  lhs.r = captura @decls.d @intrs.u
+      lhs.d = @decls.d 
+      lhs.u = @intrs.u
+      lhs.cod = "import java.util.Scanner;" ++ "\n\n" ++  "public class " ++ @string ++ " { " ++ "\n" ++ "   public static void main(String[] args) { " ++
+                "\n" ++ "   Scanner teclado = new Scanner(System.in); " ++ "\n" ++ @decls.cod ++ @intrs.cod ++ "\n" ++ "}" ++ "\n" ++ "}"
+      
 
 SEM Decls 
 | De lhs.d = @decl.d ++ @decls.d
+     lhs.cod = @decl.cod ++ ";" ++"\n" ++ @decls.cod
+
 | Vacio lhs.d = [] 
-      
+        lhs.cod = ""
+
 SEM Decl 
 | Dec lhs.d = @string:[] 
-      
+      lhs.cod = @tipo.cod ++ " " ++ @string
 
+SEM Intrs 
+| Is1 lhs.u = @inst.u ++ @intrs.u  
+      lhs.cod = @inst.cod ++ ";"++"\n" ++ @intrs.cod
+| Is2 lhs.u = []
+      lhs.cod = ""
+          
+SEM Inst 
+| I1 lhs.u = @string:[]   
+     lhs.cod = "   System.out.println(\"Ingrese valor " ++ @string ++ " :\");" ++"\n" ++ "   " ++ @string ++ " = teclado.nextInt()"
+
+| I2 lhs.u =  @string:[] 
+     lhs.cod = "   System.out.println(\"valor de " ++ @string ++ " :\"" ++ " + " ++ @string ++ ")"
+
+SEM Tipo 
+| T1 lhs.cod = "   int"
+| T2 lhs.cod = "   float"
          
-
-
-
-
