@@ -69,60 +69,115 @@ DATA SimpOps | Smas
              | Sdiv
 
 
-ATTR Prog  [  |  | d:Lista u:Lista ]
-ATTR Metodos [  |  | d:Lista ]
-ATTR Metodo [  |  | d:Lista ]
-ATTR Instancia [  |  | d:Lista ]
-ATTR Instancias [  |  | d:Lista ]
-ATTR CuerpoMet [  |  | d:Lista ]
-ATTR Funcion [  |  | d:Lista ]
-ATTR Mostrar [  |  | d:Lista ]
-ATTR Funciones [  |  | d:Lista ]
-ATTR Main [  |  | d:Lista ]
-ATTR Tipo [  |  | d:Lista ]
-ATTR Expresion [  |  | d:Lista ]
-ATTR A [  |  | d:Lista ]
-ATTR B [  |  | d:Lista ]
-ATTR C [  |  | d:Lista ]
-ATTR Relacion [  |  | d:Lista ]
-ATTR Terminos [  |  | d:Lista ]
-ATTR Fr [  |  | d:Lista ]
-ATTR OpLog [  |  | d:Lista ]
-ATTR SimpOps [  |  | d:Lista ]
+ATTR Prog  [  |  | d:Lista u:Lista cod:String ]
+ATTR Metodos [  |  | d:Lista cod:String ]
+ATTR Metodo [  |  | d:Lista cod:String]
+ATTR Instancia [  |  | d:Lista cod:String ]
+ATTR Instancias [  |  | d:Lista cod:String]
+ATTR CuerpoMet [  |  | d:Lista cod:String]
+ATTR Funcion [  |  | d:Lista cod:String]
+ATTR Mostrar [  |  | d:Lista cod:String]
+ATTR Funciones [  |  | d:Lista cod:String]
+ATTR Main [  |  | d:Lista cod:String]
+ATTR Tipo [  |  | d:Lista cod:String]
+ATTR Expresion [  |  | d:Lista cod:String]
+ATTR A [  |  | d:Lista cod:String]
+ATTR B [  |  | d:Lista cod:String]
+ATTR C [  |  | d:Lista cod:String]
+ATTR Relacion [  |  | d:Lista cod:String]
+ATTR Terminos [  |  | d:Lista cod:String]
+ATTR Fr [  |  | d:Lista cod:String]
+ATTR OpLog [  |  | d:Lista cod:String]
+ATTR SimpOps [  |  | d:Lista cod:String]
 
-SEM Prog 
+SEM -- Prog Prog Metodos Main
 | Prog  lhs.r = captura @decls.d @intrs.u
       lhs.d = @decls.d 
       lhs.u = @intrs.u
-      lhs.cod = "import java.util.Scanner;" ++ "\n\n" ++  "public class " ++ @string ++ " { " ++ "\n" ++ "   public static void main(String[] args) { " ++
-                "\n" ++ "   Scanner teclado = new Scanner(System.in); " ++ "\n" ++ @decls.cod ++ @intrs.cod ++ "\n" ++ "}" ++ "\n" ++ "}"
-      
+      lhs.cod = "program Pascal;" ++ "\n\n" ++ @metodos.cod  ++ "\n\n"++ @main.cod
 
-SEM Decls 
-| De lhs.d = @decl.d ++ @decls.d
-     lhs.cod = @decl.cod ++ ";" ++"\n" ++ @decls.cod
+SEM Metodos -- Metodo Metodos
+| Metds  lhs.r = @metodo.r ++ @metodos.r
+        lhs.d = @metodo.d ++ @metodos.d
+        lhs.cod = @metodo.cod ++ @metodos.cod
+| VacioMet  lhs.r = ""
+           lhs.d = ""
+           lhs.cod = ""
 
-| Vacio lhs.d = [] 
-        lhs.cod = ""
+SEM Metodo Instancia Instancia1 Instancia2 CuerpoMet
+| Metd lhs.cod = "function" ++ @instancia.string ++ " ("++ @instancia1.string ", " ++ @instancia2.string ++ ")" @cuerpomet.cod ++ "\n\n"
 
-SEM Decl 
-| Dec lhs.d = @string:[] 
-      lhs.cod = @tipo.cod ++ " " ++ @string
+SEM Instancia Tipo String
+| Instancia lhs.cod = @string ++ " : "++ @tipo.cod ++ " ;"
 
-SEM Intrs 
-| Is1 lhs.u = @inst.u ++ @intrs.u  
-      lhs.cod = @inst.cod ++ ";"++"\n" ++ @intrs.cod
-| Is2 lhs.u = []
-      lhs.cod = ""
-          
-SEM Inst 
-| I1 lhs.u = @string:[]   
-     lhs.cod = "   System.out.println(\"Ingrese valor " ++ @string ++ " :\");" ++"\n" ++ "   " ++ @string ++ " = teclado.nextInt()"
+SEM Instancias 
+| Instancias Instancia Instancia1
+lhs.d = @tipo.string 
+| VacioInst
 
-| I2 lhs.u =  @string:[] 
-     lhs.cod = "   System.out.println(\"valor de " ++ @string ++ " :\"" ++ " + " ++ @string ++ ")"
+SEM CuerpoMet 
+| CuerpoM Expresion
+| CuerpoMCondicional Expresion Funciones Expresion
+
+SEM Funciones 
+| Funciones --Funcion Funciones
+lhs.cod = @funcion.cod ++ " ;" ++@funciones.cod
+| VacioFuncs lhs.cod = ""
+
+SEM Funcion
+| Funcion1 String Mostrar
+lhs.cod = "WriteLn(" ++ @string ++ @mostrar.cod ++ ")"
+| Funcion2 String
+| Funcion3 Instancia String String1 String2
+
+SEM Mostrar
+| Mostrar --String 
+lhs.cod = ","++ @string
+| MostrarVacio lhs.cod = ""
+
+SEM Main 
+| Main --Instancias Funciones Int
 
 SEM Tipo 
-| T1 lhs.cod = "   int"
-| T2 lhs.cod = "   float"
-         
+| T1 lhs.cod = "Integer"
+| T2 lhs.cod = "Real"
+
+SEM Expresion 
+| Expresion --Relacion A
+
+SEM A 
+| A Oplog --Expresion
+| AVacio
+
+SEM Relacion 
+| Relacion --Terminos B
+
+SEM B 
+| B --SimpOps Relacion
+| BVacio
+
+SEM C 
+| C --SimpOps Terminos
+| CVacio
+
+SEM Terminos 
+| Terminos --Fr C
+
+SEM Fr 
+| Fr --Expresion
+| Fr1 --String
+| Fr2 --Int
+
+SEM OpLog 
+| Opmenor lhs.cod = "<"
+| Opmayor lhs.cod= ">"
+| Opmayorigual lhs.cod = ">="
+| Opmenorigual lhs.cod = "<="
+| Opdistinto lhs.cod = "<>"
+| Opigual lhs.cod = "="
+
+SEM SimpOps 
+| Smas lhs.cod = "+"
+| Smenos lhs.cod = "-"
+| Smul lhs.cod = "*"
+| Sdiv lhs.cod = "/"

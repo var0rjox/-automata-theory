@@ -8,6 +8,7 @@ data Prog = Prog Metodos Main
        deriving Show
 
 pProg = Prog <$ pSimbolo "#" <* pPalClave "include" <* pSimbolo "<" <* pPalClave "stdio" <* pSimbolo "." <* pPalClave "h" <* pSimbolo ">" <*> pMetodos <*> pMain
+
 -- Completo pProg y Prog
 data Metodos = Metds Metodo Metodos
        | VacioMet
@@ -136,7 +137,7 @@ pC = (\a b -> C a b ) <$>pSimOps <*>pTerminos
   <|>  pSucceed CVacio        
 
 pFr = (\a -> Fr a ) <$ pSimbolo "(" <*> pExpresion <* pSimbolo ")"
-     <|>(\a -> Fr1 a ) <$> pIdent  
+     <|>(\a -> Fr1 a ) <$> pIdent
      <|> (\a -> Fr2 a ) <$> pInt 
 
 pOpLog = Opmenor <$ pSimbolo "<"

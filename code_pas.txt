@@ -1,0 +1,56 @@
+program Pascal;
+
+function Sumar(numero1, numero2: Integer): Integer;
+begin
+  Sumar := numero1 + numero2;
+end;
+
+function Restar(numero1, numero2: Integer): Integer;
+begin
+  Restar := numero1 - numero2;
+end;
+
+function Multiplicar(numero1, numero2: Integer): Integer;
+begin
+  Multiplicar := numero1 * numero2;
+end;
+
+function Dividir(numero1, numero2: Integer): Real;
+begin
+  if numero2 <= 0 then
+  begin
+    WriteLn('El segundo número es menor o igual a cero');
+    Dividir := 0.0;
+  end
+  else
+  begin
+    Dividir := numero1 / numero2;
+  end;
+end;
+
+var
+   num1 : Integer;
+   num2 : Integer;
+   resultadoSum : Integer;
+   resultadoRes : Integer;
+   resultadoMul: Integer;
+   resultadoDiv: Real;
+
+begin
+  Write('Ingrese el primer número: ');
+  ReadLn(num1);
+
+  Write('Ingrese el segundo número: ');
+  ReadLn(num2);
+
+  resultadoSum := Sumar(num1, num2);
+  resultadoRes := Restar(num1, num2);
+  resultadoMul := Multiplicar(num1, num2);
+  resultadoDiv := Dividir(num1, num2);
+
+  WriteLn('La suma de los 2 números es: ', resultadoSum);
+  WriteLn('La resta del 1ero con el 2do número es: ', resultadoRes);
+  WriteLn('La multiplicación del 1ero con el 2do número es: ', resultadoMul);
+  WriteLn('La división del 1ero con el 2do número es: ', resultadoDiv);
+
+end.
