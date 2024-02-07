@@ -2,12 +2,13 @@
 type Lista = [String]
 type Instancia1 = Instancia
 type Instancia2 = Instancia
+type Expresion1 = Expresion
 type String1 = String
 type String2 = String
 type String3 = String
 
 fVerificar a t@(x:xs) | a `elem` t = True 
-                      | otherwise = False 
+          | otherwise = False 
 
 recorrido t@(x:xs) (y:ys) = fVerificar y t && recorrido t ys 
 recorrido [] (y:ys) = False 
@@ -15,7 +16,7 @@ recorrido t@(x:xs) [] = True
 
 
 fencontrar y t@(x:xs) | y `elem` t = [] 
-                      | otherwise = y:[] 
+          | otherwise = y:[] 
 
 captura t@(x:xs) (y:ys) = fencontrar y t ++ captura t ys 
 captura [] (y:ys) = []
@@ -26,34 +27,40 @@ captura t@(x:xs) [] = []
 DATA Prog | Prog Metodos Main
 
 DATA Metodos | Metds Metodo Metodos
-             | VacioMet
+       | VacioMet
 
 DATA Metodo | Metd Instancia Instancia1 Instancia2 CuerpoMet
 
 DATA Instancia | Instancia Tipo String
 
+DATA Instancia1 | Instancia1 Tipo String
+
+DATA Instancia2 | Instancia2 Tipo String
+
 DATA Instancias | Instancias Instancia Instancias
-                | VacioInst
+    | VacioInst
 
 DATA CuerpoMet | CuerpoM Expresion
-               | CuerpoMCondicional Expresion Funciones Expresion
+         | CuerpoMCondicional Expresion Funciones Expresion1
 
 DATA Funcion | Funcion1 String Mostrar
-              | Funcion2 String
-              | Funcion3 Instancia String String1 String2
+        | Funcion2 String
+        | Funcion3 Instancia String String1 String2
 
 DATA Mostrar | Mostrar String
-             | MostrarVacio
+       | MostrarVacio
 
 DATA Funciones | Funciones Funcion Funciones
-               | VacioFuncs
+         | VacioFuncs
 
 DATA Main | Main Instancias Funciones Int
 
 DATA Tipo | T1
-          | T2
+    | T2
 
 DATA Expresion | Expresion Relacion A
+
+DATA Expresion1 | Expresion1 Relacion A
 
 DATA A | A Oplog Expresion
        | AVacio
@@ -61,73 +68,96 @@ DATA A | A Oplog Expresion
 DATA Relacion | Relacion Terminos B
 
 DATA B | B SimpOps Relacion
-        | BVacio
+  | BVacio
 
 DATA C | C SimpOps Terminos
-        | CVacio
+  | CVacio
 
 DATA Terminos | Terminos Fr C
 
 DATA Fr | Fr Expresion
-        | Fr1 String
-        | Fr2 Int
+  | Fr1 String
+  | Fr2 Int
 
 DATA OpLog | Opmenor
-           | Opmayor
-           | Opmayorigual
-           | Opmenorigual
-           | Opdistinto
+     | Opmayor
+     | Opmayorigual
+     | Opmenorigual
+     | Opdistinto
 
 DATA SimpOps | Smas
-             | Smenos
-             | Smul
-             | Sdiv
+       | Smenos
+       | Smul
+       | Sdiv
 
 
-ATTR Prog  [  |  | d:Lista u:Lista cod:String ]
-ATTR Metodos [  |  | d:Lista cod:String ]
-ATTR Metodo [  |  | d:Lista cod:String]
-ATTR Instancia [  |  | d:Lista cod:String ]
-ATTR Instancias [  |  | d:Lista cod:String]
-ATTR CuerpoMet [  |  | d:Lista cod:String]
-ATTR Funcion [  |  | d:Lista cod:String]
-ATTR Mostrar [  |  | d:Lista cod:String]
-ATTR Funciones [  |  | d:Lista cod:String]
-ATTR Main [  |  | d:Lista cod:String]
-ATTR Tipo [  |  | d:Lista cod:String]
-ATTR Expresion [  |  | d:Lista cod:String]
-ATTR A [  |  | d:Lista cod:String]
-ATTR B [  |  | d:Lista cod:String]
-ATTR C [  |  | d:Lista cod:String]
-ATTR Relacion [  |  | d:Lista cod:String]
-ATTR Terminos [  |  | d:Lista cod:String]
-ATTR Fr [  |  | d:Lista cod:String]
-ATTR OpLog [  |  | d:Lista cod:String]
-ATTR SimpOps [  |  | d:Lista cod:String]
+ATTR Prog  [  |  |  cod:String ]
+ATTR Metodos [  |  | cod:String ]
+ATTR Metodo [  |  | cod:String]
+ATTR Instancia [  |  | cod:String ]
+ATTR Instancia1 [  |  | cod:String ]
+ATTR Instancia2 [  |  | cod:String ]
+ATTR Instancias [  |  |  cod:String]
+ATTR CuerpoMet [  |  | cod:String]
+ATTR Funcion [  |  | cod:String]
+ATTR Mostrar [  |  | cod:String]
+ATTR Funciones [  |  | cod:String]
+ATTR Main [  |  | cod:String]
+ATTR Tipo [  |  | cod:String]
+ATTR Expresion [  |  | cod:String]
+ATTR Expresion1 [  |  | cod:String]
+ATTR A [  |  | cod:String]
+ATTR B [  |  | cod:String]
+ATTR C [  |  | cod:String]
+ATTR Relacion [  |  | cod:String]
+ATTR Terminos [  |  | cod:String]
+ATTR Fr [  |  | cod:String]
+ATTR OpLog [  |  | cod:String]
+ATTR SimpOps [  |  | cod:String]
 
-SEM
-| Prog  lhs.r = captura @decls.d @intrs.u
-      lhs.d = @decls.d 
-      lhs.u = @intrs.u
-      lhs.cod = "program Pascal;" ++ "\n\n" ++ @metodos.cod  ++ "\n\n"++ @main.cod
+SEM OpLog 
+| Opmenor lhs.cod = "<"
+| Opmayor lhs.cod = ">"
+| Opmayorigual lhs.cod = ">="
+| Opmenorigual lhs.cod = "<="
+| Opdistinto lhs.cod = "<>"
+
+SEM SimpOps 
+| Smas lhs.cod = "+"
+| Smenos lhs.cod = "-"
+| Smul lhs.cod = "*"
+| Sdiv lhs.cod = "/"
+
+SEM Tipo 
+| T1 lhs.cod = "Integer"
+| T2 lhs.cod = "Real"
+
+SEM CuerpoMet 
+| CuerpoM lhs.cod = @expresion.cod
+| CuerpoMCondicional lhs.cod = "if " ++ @expresion.cod ++ "then \n begin \n " @funciones.cod ++ "\n end \n  else \n  begin \n    " ++ @expresion1.cod ++ "\n  end;"
+
+SEM Prog
+| Prog lhs.cod = "program Pascal;" ++ "\n\n" ++ @metodos.cod  ++ "\n\n"++ @main.cod
 
 SEM Metodos
 | Metds  lhs.cod = @metodo.cod ++ @metodos.cod
 | VacioMet lhs.cod = ""
 
 SEM Metodo
-| Metd lhs.cod = "function " ++ @instancia.string ++ " (" ++ @instancia.string ++ ":" ++ @instancia.tipo ++ ") \n begin \n" ++ @cuerpomet.cod ++ "end; \n\n"
+| Metd lhs.cod = "function " ++ @instancia.string ++ " (" ++ @instancia1.string ++ ":" ++ @instancia2.tipo ++ ") \n begin \n" ++ @cuerpomet.cod ++ "end; \n\n"
 
 SEM Instancia
 | Instancia lhs.cod = @string ++ " : "++ @tipo.cod
 
+SEM Instancia1
+| Instancia1 lhs.cod = @string ++ " : "++ @tipo.cod
+
+SEM Instancia2
+| Instancia2 lhs.cod = @string ++ " : "++ @tipo.cod
+
 SEM Instancias 
 | Instancias lhs.cod = @instancia.cod ++ " ;" ++ @instancias.cod
 | VacioInst lhs.cod = ""
-
-SEM CuerpoMet 
-| CuerpoM lhs.cod = @expresion.cod
-| CuerpoMCondicional lhs.cod = "if " ++ @expresion.cod ++ "then \n begin \n " @funciones.cod ++ "\n end \n  else \n  begin \n    " @expresion.cod ++ "\n  end;"
 
 SEM Funciones 
 | Funciones lhs.cod = @funcion.cod ++ " ;" ++ @funciones.cod
@@ -145,12 +175,11 @@ SEM Mostrar
 SEM Main 
 | Main lhs.cod = "var \n " ++ @instancias.cod ++ " \n begin \n " ++ @funciones.cod ++ " \n end."
 
-SEM Tipo 
-| T1 lhs.cod = "Integer"
-| T2 lhs.cod = "Real"
-
 SEM Expresion 
 | Expresion lhs.cod = @relacion.cod ++ @a.cod
+
+SEM Expresion1
+| Expresion1 lhs.cod = @relacion.cod ++ @a.cod
 
 SEM A 
 | A lhs.cod = @oplog.cod ++ @expresion.cod
@@ -173,17 +202,5 @@ SEM Terminos
 SEM Fr 
 | Fr lhs.cod = "(" ++ @expresion.cod ++ ")"
 | Fr1 lhs.cod = @string
-| Fr2 lhs.cod = @int
+| Fr2 lhs.cod = show @int
 
-SEM OpLog 
-| Opmenor lhs.cod = "<"
-| Opmayor lhs.cod= ">"
-| Opmayorigual lhs.cod = ">="
-| Opmenorigual lhs.cod = "<="
-| Opdistinto lhs.cod = "<>"
-
-SEM SimpOps 
-| Smas lhs.cod = "+"
-| Smenos lhs.cod = "-"
-| Smul lhs.cod = "*"
-| Sdiv lhs.cod = "/"

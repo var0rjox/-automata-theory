@@ -160,18 +160,21 @@ pMetodos = sem_Metodos_Metds <$> pMetodo <*> pMetodos
   <|>  pSucceed sem_Metodos_VacioMet
 
 
-pMetodo = sem_Metodo_Metd <$> pInstancia <* pSimbolo "(" <*> pInstancia <* pSimbolo "," <*> pInstancia <* pSimbolo ")"  <* pSimbolo "{" <*> pCuerpoMet <* pSimbolo "}"
+pMetodo = sem_Metodo_Metd <$> pInstancia <* pSimbolo "(" <*> pInstancia1 <* pSimbolo "," <*> pInstancia2 <* pSimbolo ")"  <* pSimbolo "{" <*> pCuerpoMet <* pSimbolo "}"
 
 
 pInstancia = sem_Instancia_Instancia <$> pTipo <*> pIdent
 
+pInstancia1 = sem_Instancia1_Instancia1 <$> pTipo <*> pIdent
+
+pInstancia2 = sem_Instancia2_Instancia2 <$> pTipo <*> pIdent
 
 pInstancias = sem_Instancias_Instancias <$> pInstancia <* pSimbolo ";" <*> pInstancias
   <|>  pSucceed sem_Instancias_VacioIns
 
        
 pCuerpoMet = sem_CuerpoMet_CuerpoM <$ pPalClave "return" <*> pExpresion <* pSimbolo ";"
-  <|> sem_CuerpoMet_CuerpoMCondicional <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pFunciones <* pSimbolo "}" <* pPalClave "else" <* pSimbolo "{" <* pPalClave "return" <*> pExpresion <* pSimbolo ";" <* pSimbolo "}"
+  <|> sem_CuerpoMet_CuerpoMCondicional <$ pPalClave "if" <*> pExpresion <* pSimbolo "{" <*> pFunciones <* pSimbolo "}" <* pPalClave "else" <* pSimbolo "{" <* pPalClave "return" <*> pExpresion1 <* pSimbolo ";" <* pSimbolo "}"
 
 
 
@@ -197,6 +200,8 @@ pTipo = sem_Tipo_T1 <$ pPalClave "int"
     <|> sem_Tipo_T2 <$ pPalClave "float"
 
 pExpresion = sem_Expresion_Expresion <$>pRelacion <*> pA
+
+pExpresion1 = sem_Expresion1_Expresion1 <$>pRelacion <*> pA
 
 pA = sem_A_A <$> pOpLog <*> pExpresion
   <|>  pSucceed sem_A_AVacio
