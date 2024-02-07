@@ -2,9 +2,6 @@
 module Atrib where
 
 type Lista = [String]
-type Instancia1 = Instancia
-type Instancia2 = Instancia
-type Expresion1 = Expresion
 type String1 = String
 type String2 = String
 type String3 = String
@@ -31,7 +28,6 @@ captura t@(x:xs) [] = []
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -42,28 +38,27 @@ captura t@(x:xs) [] = []
    local variables for A.AVacio:
 
 -}
-data A = A_A (Oplog) (Expresion)
+data A = A_A (OpLog) (Expresion)
        | A_AVacio 
 -- semantic domain
-type T_A = ((String))
+type T_A = ()
 -- cata
 sem_A :: (A) ->
          (T_A)
-sem_A ((A_A (_oplog) (_expresion))) =
-    (sem_A_A (_oplog) ((sem_Expresion (_expresion))))
+sem_A ((A_A (_opLog) (_expresion))) =
+    (sem_A_A ((sem_OpLog (_opLog))) ((sem_Expresion (_expresion))))
 sem_A ((A_AVacio )) =
     (sem_A_AVacio )
-sem_A_A :: (Oplog) ->
+sem_A_A :: (T_OpLog) ->
            (T_Expresion) ->
            (T_A)
-sem_A_A (_oplog) (_expresion) =
-    let ( _expresion_cod) =
-            (_expresion )
-    in  (_oplog_cod ++ _expresion_cod)
+sem_A_A (_opLog) (_expresion) =
+    let 
+    in  ()
 sem_A_AVacio :: (T_A)
 sem_A_AVacio  =
     let 
-    in  ("")
+    in  ()
 -- B -----------------------------------------------------------
 {-
    inherited attributes:
@@ -71,7 +66,6 @@ sem_A_AVacio  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -85,7 +79,7 @@ sem_A_AVacio  =
 data B = B_B (SimpOps) (Relacion)
        | B_BVacio 
 -- semantic domain
-type T_B = ((String))
+type T_B = ()
 -- cata
 sem_B :: (B) ->
          (T_B)
@@ -97,15 +91,12 @@ sem_B_B :: (T_SimpOps) ->
            (T_Relacion) ->
            (T_B)
 sem_B_B (_simpOps) (_relacion) =
-    let ( _simpOps_cod) =
-            (_simpOps )
-        ( _relacion_cod) =
-            (_relacion )
-    in  (_simpops_cod ++ _relacion_cod)
+    let 
+    in  ()
 sem_B_BVacio :: (T_B)
 sem_B_BVacio  =
     let 
-    in  ("")
+    in  ()
 -- C -----------------------------------------------------------
 {-
    inherited attributes:
@@ -113,7 +104,6 @@ sem_B_BVacio  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -127,7 +117,7 @@ sem_B_BVacio  =
 data C = C_C (SimpOps) (Terminos)
        | C_CVacio 
 -- semantic domain
-type T_C = ((String))
+type T_C = ()
 -- cata
 sem_C :: (C) ->
          (T_C)
@@ -139,15 +129,12 @@ sem_C_C :: (T_SimpOps) ->
            (T_Terminos) ->
            (T_C)
 sem_C_C (_simpOps) (_terminos) =
-    let ( _simpOps_cod) =
-            (_simpOps )
-        ( _terminos_cod) =
-            (_terminos )
-    in  (_simpops_cod ++ _terminos_cod)
+    let 
+    in  ()
 sem_C_CVacio :: (T_C)
 sem_C_CVacio  =
     let 
-    in  ("")
+    in  ()
 -- CuerpoMet ---------------------------------------------------
 {-
    inherited attributes:
@@ -155,7 +142,6 @@ sem_C_CVacio  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -169,7 +155,7 @@ sem_C_CVacio  =
 data CuerpoMet = CuerpoMet_CuerpoM (Expresion)
                | CuerpoMet_CuerpoMCondicional (Expresion) (Funciones) (Expresion1)
 -- semantic domain
-type T_CuerpoMet = ((String))
+type T_CuerpoMet = ()
 -- cata
 sem_CuerpoMet :: (CuerpoMet) ->
                  (T_CuerpoMet)
@@ -180,21 +166,15 @@ sem_CuerpoMet ((CuerpoMet_CuerpoMCondicional (_expresion) (_funciones) (_expresi
 sem_CuerpoMet_CuerpoM :: (T_Expresion) ->
                          (T_CuerpoMet)
 sem_CuerpoMet_CuerpoM (_expresion) =
-    let ( _expresion_cod) =
-            (_expresion )
-    in  (_expresion_cod)
+    let 
+    in  ()
 sem_CuerpoMet_CuerpoMCondicional :: (T_Expresion) ->
                                     (T_Funciones) ->
                                     (T_Expresion1) ->
                                     (T_CuerpoMet)
 sem_CuerpoMet_CuerpoMCondicional (_expresion) (_funciones) (_expresion1) =
-    let ( _expresion_cod) =
-            (_expresion )
-        ( _funciones_cod) =
-            (_funciones )
-        ( _expresion1_cod) =
-            (_expresion1 )
-    in  ("if " ++ _expresion_cod ++ "then \n begin \n " _funciones_cod ++ "\n end \n  else \n  begin \n    " ++ _expresion1_cod ++ "\n  end;")
+    let 
+    in  ()
 -- Expresion ---------------------------------------------------
 {-
    inherited attributes:
@@ -202,7 +182,6 @@ sem_CuerpoMet_CuerpoMCondicional (_expresion) (_funciones) (_expresion1) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -211,7 +190,7 @@ sem_CuerpoMet_CuerpoMCondicional (_expresion) (_funciones) (_expresion1) =
 -}
 data Expresion = Expresion_Expresion (Relacion) (A)
 -- semantic domain
-type T_Expresion = ((String))
+type T_Expresion = ()
 -- cata
 sem_Expresion :: (Expresion) ->
                  (T_Expresion)
@@ -221,11 +200,8 @@ sem_Expresion_Expresion :: (T_Relacion) ->
                            (T_A) ->
                            (T_Expresion)
 sem_Expresion_Expresion (_relacion) (_a) =
-    let ( _relacion_cod) =
-            (_relacion )
-        ( _a_cod) =
-            (_a )
-    in  (_relacion_cod ++ _a_cod)
+    let 
+    in  ()
 -- Expresion1 --------------------------------------------------
 {-
    inherited attributes:
@@ -233,7 +209,6 @@ sem_Expresion_Expresion (_relacion) (_a) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -242,7 +217,7 @@ sem_Expresion_Expresion (_relacion) (_a) =
 -}
 data Expresion1 = Expresion1_Expresion1 (Relacion) (A)
 -- semantic domain
-type T_Expresion1 = ((String))
+type T_Expresion1 = ()
 -- cata
 sem_Expresion1 :: (Expresion1) ->
                   (T_Expresion1)
@@ -252,11 +227,8 @@ sem_Expresion1_Expresion1 :: (T_Relacion) ->
                              (T_A) ->
                              (T_Expresion1)
 sem_Expresion1_Expresion1 (_relacion) (_a) =
-    let ( _relacion_cod) =
-            (_relacion )
-        ( _a_cod) =
-            (_a )
-    in  (_relacion_cod ++ _a_cod)
+    let 
+    in  ()
 -- Fr ----------------------------------------------------------
 {-
    inherited attributes:
@@ -264,7 +236,6 @@ sem_Expresion1_Expresion1 (_relacion) (_a) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -283,7 +254,7 @@ data Fr = Fr_Fr (Expresion)
         | Fr_Fr1 (String)
         | Fr_Fr2 (Int)
 -- semantic domain
-type T_Fr = ((String))
+type T_Fr = ()
 -- cata
 sem_Fr :: (Fr) ->
           (T_Fr)
@@ -296,19 +267,18 @@ sem_Fr ((Fr_Fr2 (_int))) =
 sem_Fr_Fr :: (T_Expresion) ->
              (T_Fr)
 sem_Fr_Fr (_expresion) =
-    let ( _expresion_cod) =
-            (_expresion )
-    in  ("(" ++ _expresion_cod ++ ")")
+    let 
+    in  ()
 sem_Fr_Fr1 :: (String) ->
               (T_Fr)
 sem_Fr_Fr1 (_string) =
     let 
-    in  (_string)
+    in  ()
 sem_Fr_Fr2 :: (Int) ->
               (T_Fr)
 sem_Fr_Fr2 (_int) =
     let 
-    in  (show _int)
+    in  ()
 -- Funcion -----------------------------------------------------
 {-
    inherited attributes:
@@ -316,7 +286,6 @@ sem_Fr_Fr2 (_int) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -335,7 +304,7 @@ data Funcion = Funcion_Funcion1 (String) (Mostrar)
              | Funcion_Funcion2 (String)
              | Funcion_Funcion3 (Instancia) (String) (String1) (String2)
 -- semantic domain
-type T_Funcion = ((String))
+type T_Funcion = ()
 -- cata
 sem_Funcion :: (Funcion) ->
                (T_Funcion)
@@ -349,23 +318,21 @@ sem_Funcion_Funcion1 :: (String) ->
                         (T_Mostrar) ->
                         (T_Funcion)
 sem_Funcion_Funcion1 (_string) (_mostrar) =
-    let ( _mostrar_cod) =
-            (_mostrar )
-    in  ("WriteLn( '" ++ _string ++ _mostrar_cod ++ "')")
+    let 
+    in  ()
 sem_Funcion_Funcion2 :: (String) ->
                         (T_Funcion)
 sem_Funcion_Funcion2 (_string) =
     let 
-    in  ("ReadLn(" ++ _string ++ ")")
+    in  ()
 sem_Funcion_Funcion3 :: (T_Instancia) ->
                         (String) ->
                         (String1) ->
                         (String2) ->
                         (T_Funcion)
 sem_Funcion_Funcion3 (_instancia) (_string) (_string1) (_string2) =
-    let ( _instancia_cod) =
-            (_instancia )
-    in  (_instancia_string ++ " := " ++ _string ++ "(" ++ _string ++ ", " ++ _string ++ ")")
+    let 
+    in  ()
 -- Funciones ---------------------------------------------------
 {-
    inherited attributes:
@@ -373,7 +340,6 @@ sem_Funcion_Funcion3 (_instancia) (_string) (_string1) (_string2) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -387,7 +353,7 @@ sem_Funcion_Funcion3 (_instancia) (_string) (_string1) (_string2) =
 data Funciones = Funciones_Funciones (Funcion) (Funciones)
                | Funciones_VacioFuncs 
 -- semantic domain
-type T_Funciones = ((String))
+type T_Funciones = ()
 -- cata
 sem_Funciones :: (Funciones) ->
                  (T_Funciones)
@@ -399,15 +365,12 @@ sem_Funciones_Funciones :: (T_Funcion) ->
                            (T_Funciones) ->
                            (T_Funciones)
 sem_Funciones_Funciones (_funcion) (_funciones) =
-    let ( _funcion_cod) =
-            (_funcion )
-        ( _funciones_cod) =
-            (_funciones )
-    in  (_funcion_cod ++ " ;" ++ _funciones_cod)
+    let 
+    in  ()
 sem_Funciones_VacioFuncs :: (T_Funciones)
 sem_Funciones_VacioFuncs  =
     let 
-    in  ("")
+    in  ()
 -- Instancia ---------------------------------------------------
 {-
    inherited attributes:
@@ -415,7 +378,6 @@ sem_Funciones_VacioFuncs  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -424,7 +386,7 @@ sem_Funciones_VacioFuncs  =
 -}
 data Instancia = Instancia_Instancia (Tipo) (String)
 -- semantic domain
-type T_Instancia = ((String))
+type T_Instancia = ()
 -- cata
 sem_Instancia :: (Instancia) ->
                  (T_Instancia)
@@ -434,9 +396,8 @@ sem_Instancia_Instancia :: (T_Tipo) ->
                            (String) ->
                            (T_Instancia)
 sem_Instancia_Instancia (_tipo) (_string) =
-    let ( _tipo_cod) =
-            (_tipo )
-    in  (_string ++ " : "++ _tipo_cod)
+    let 
+    in  ()
 -- Instancia1 --------------------------------------------------
 {-
    inherited attributes:
@@ -444,7 +405,6 @@ sem_Instancia_Instancia (_tipo) (_string) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -453,7 +413,7 @@ sem_Instancia_Instancia (_tipo) (_string) =
 -}
 data Instancia1 = Instancia1_Instancia1 (Tipo) (String)
 -- semantic domain
-type T_Instancia1 = ((String))
+type T_Instancia1 = ()
 -- cata
 sem_Instancia1 :: (Instancia1) ->
                   (T_Instancia1)
@@ -463,9 +423,8 @@ sem_Instancia1_Instancia1 :: (T_Tipo) ->
                              (String) ->
                              (T_Instancia1)
 sem_Instancia1_Instancia1 (_tipo) (_string) =
-    let ( _tipo_cod) =
-            (_tipo )
-    in  (_string ++ " : "++ _tipo_cod)
+    let 
+    in  ()
 -- Instancia2 --------------------------------------------------
 {-
    inherited attributes:
@@ -473,7 +432,6 @@ sem_Instancia1_Instancia1 (_tipo) (_string) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -482,7 +440,7 @@ sem_Instancia1_Instancia1 (_tipo) (_string) =
 -}
 data Instancia2 = Instancia2_Instancia2 (Tipo) (String)
 -- semantic domain
-type T_Instancia2 = ((String))
+type T_Instancia2 = ()
 -- cata
 sem_Instancia2 :: (Instancia2) ->
                   (T_Instancia2)
@@ -492,9 +450,8 @@ sem_Instancia2_Instancia2 :: (T_Tipo) ->
                              (String) ->
                              (T_Instancia2)
 sem_Instancia2_Instancia2 (_tipo) (_string) =
-    let ( _tipo_cod) =
-            (_tipo )
-    in  (_string ++ " : "++ _tipo_cod)
+    let 
+    in  ()
 -- Instancias --------------------------------------------------
 {-
    inherited attributes:
@@ -502,7 +459,6 @@ sem_Instancia2_Instancia2 (_tipo) (_string) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -516,7 +472,7 @@ sem_Instancia2_Instancia2 (_tipo) (_string) =
 data Instancias = Instancias_Instancias (Instancia) (Instancias)
                 | Instancias_VacioInst 
 -- semantic domain
-type T_Instancias = ((String))
+type T_Instancias = ()
 -- cata
 sem_Instancias :: (Instancias) ->
                   (T_Instancias)
@@ -528,15 +484,12 @@ sem_Instancias_Instancias :: (T_Instancia) ->
                              (T_Instancias) ->
                              (T_Instancias)
 sem_Instancias_Instancias (_instancia) (_instancias) =
-    let ( _instancia_cod) =
-            (_instancia )
-        ( _instancias_cod) =
-            (_instancias )
-    in  (_instancia_cod ++ " ;" ++ _instancias_cod)
+    let 
+    in  ()
 sem_Instancias_VacioInst :: (T_Instancias)
 sem_Instancias_VacioInst  =
     let 
-    in  ("")
+    in  ()
 -- Main --------------------------------------------------------
 {-
    inherited attributes:
@@ -544,7 +497,6 @@ sem_Instancias_VacioInst  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -553,7 +505,7 @@ sem_Instancias_VacioInst  =
 -}
 data Main = Main_Main (Instancias) (Funciones) (Int)
 -- semantic domain
-type T_Main = ((String))
+type T_Main = ()
 -- cata
 sem_Main :: (Main) ->
             (T_Main)
@@ -564,11 +516,8 @@ sem_Main_Main :: (T_Instancias) ->
                  (Int) ->
                  (T_Main)
 sem_Main_Main (_instancias) (_funciones) (_int) =
-    let ( _instancias_cod) =
-            (_instancias )
-        ( _funciones_cod) =
-            (_funciones )
-    in  ("var \n " ++ _instancias_cod ++ " \n begin \n " ++ _funciones_cod ++ " \n end.")
+    let 
+    in  ()
 -- Metodo ------------------------------------------------------
 {-
    inherited attributes:
@@ -576,7 +525,6 @@ sem_Main_Main (_instancias) (_funciones) (_int) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -585,7 +533,7 @@ sem_Main_Main (_instancias) (_funciones) (_int) =
 -}
 data Metodo = Metodo_Metd (Instancia) (Instancia1) (Instancia2) (CuerpoMet)
 -- semantic domain
-type T_Metodo = ((String))
+type T_Metodo = ()
 -- cata
 sem_Metodo :: (Metodo) ->
               (T_Metodo)
@@ -597,15 +545,8 @@ sem_Metodo_Metd :: (T_Instancia) ->
                    (T_CuerpoMet) ->
                    (T_Metodo)
 sem_Metodo_Metd (_instancia) (_instancia1) (_instancia2) (_cuerpoMet) =
-    let ( _instancia_cod) =
-            (_instancia )
-        ( _instancia1_cod) =
-            (_instancia1 )
-        ( _instancia2_cod) =
-            (_instancia2 )
-        ( _cuerpoMet_cod) =
-            (_cuerpoMet )
-    in  ("function " ++ _instancia_string ++ " (" ++ _instancia1_string ++ ":" ++ _instancia2_tipo ++ ") \n begin \n" ++ _cuerpomet_cod ++ "end; \n\n")
+    let 
+    in  ()
 -- Metodos -----------------------------------------------------
 {-
    inherited attributes:
@@ -613,7 +554,6 @@ sem_Metodo_Metd (_instancia) (_instancia1) (_instancia2) (_cuerpoMet) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -627,7 +567,7 @@ sem_Metodo_Metd (_instancia) (_instancia1) (_instancia2) (_cuerpoMet) =
 data Metodos = Metodos_Metds (Metodo) (Metodos)
              | Metodos_VacioMet 
 -- semantic domain
-type T_Metodos = ((String))
+type T_Metodos = ()
 -- cata
 sem_Metodos :: (Metodos) ->
                (T_Metodos)
@@ -639,15 +579,12 @@ sem_Metodos_Metds :: (T_Metodo) ->
                      (T_Metodos) ->
                      (T_Metodos)
 sem_Metodos_Metds (_metodo) (_metodos) =
-    let ( _metodo_cod) =
-            (_metodo )
-        ( _metodos_cod) =
-            (_metodos )
-    in  (_metodo_cod ++ _metodos_cod)
+    let 
+    in  ()
 sem_Metodos_VacioMet :: (T_Metodos)
 sem_Metodos_VacioMet  =
     let 
-    in  ("")
+    in  ()
 -- Mostrar -----------------------------------------------------
 {-
    inherited attributes:
@@ -655,7 +592,6 @@ sem_Metodos_VacioMet  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -669,7 +605,7 @@ sem_Metodos_VacioMet  =
 data Mostrar = Mostrar_Mostrar (String)
              | Mostrar_MostrarVacio 
 -- semantic domain
-type T_Mostrar = ((String))
+type T_Mostrar = ()
 -- cata
 sem_Mostrar :: (Mostrar) ->
                (T_Mostrar)
@@ -681,11 +617,11 @@ sem_Mostrar_Mostrar :: (String) ->
                        (T_Mostrar)
 sem_Mostrar_Mostrar (_string) =
     let 
-    in  ("," ++ _string)
+    in  ()
 sem_Mostrar_MostrarVacio :: (T_Mostrar)
 sem_Mostrar_MostrarVacio  =
     let 
-    in  ("")
+    in  ()
 -- OpLog -------------------------------------------------------
 {-
    inherited attributes:
@@ -693,7 +629,6 @@ sem_Mostrar_MostrarVacio  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -722,7 +657,7 @@ data OpLog = OpLog_Opdistinto
            | OpLog_Opmenor 
            | OpLog_Opmenorigual 
 -- semantic domain
-type T_OpLog = ((String))
+type T_OpLog = ()
 -- cata
 sem_OpLog :: (OpLog) ->
              (T_OpLog)
@@ -739,23 +674,23 @@ sem_OpLog ((OpLog_Opmenorigual )) =
 sem_OpLog_Opdistinto :: (T_OpLog)
 sem_OpLog_Opdistinto  =
     let 
-    in  ("<>")
+    in  ()
 sem_OpLog_Opmayor :: (T_OpLog)
 sem_OpLog_Opmayor  =
     let 
-    in  (">")
+    in  ()
 sem_OpLog_Opmayorigual :: (T_OpLog)
 sem_OpLog_Opmayorigual  =
     let 
-    in  (">=")
+    in  ()
 sem_OpLog_Opmenor :: (T_OpLog)
 sem_OpLog_Opmenor  =
     let 
-    in  ("<")
+    in  ()
 sem_OpLog_Opmenorigual :: (T_OpLog)
 sem_OpLog_Opmenorigual  =
     let 
-    in  ("<=")
+    in  ()
 -- Prog --------------------------------------------------------
 {-
    inherited attributes:
@@ -763,7 +698,6 @@ sem_OpLog_Opmenorigual  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -772,7 +706,7 @@ sem_OpLog_Opmenorigual  =
 -}
 data Prog = Prog_Prog (Metodos) (Main)
 -- semantic domain
-type T_Prog = ((String))
+type T_Prog = ()
 -- cata
 sem_Prog :: (Prog) ->
             (T_Prog)
@@ -782,11 +716,8 @@ sem_Prog_Prog :: (T_Metodos) ->
                  (T_Main) ->
                  (T_Prog)
 sem_Prog_Prog (_metodos) (_main) =
-    let ( _metodos_cod) =
-            (_metodos )
-        ( _main_cod) =
-            (_main )
-    in  ("program Pascal;" ++ "\n\n" ++ _metodos_cod  ++ "\n\n"++ _main_cod)
+    let 
+    in  ()
 -- Relacion ----------------------------------------------------
 {-
    inherited attributes:
@@ -794,7 +725,6 @@ sem_Prog_Prog (_metodos) (_main) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -803,7 +733,7 @@ sem_Prog_Prog (_metodos) (_main) =
 -}
 data Relacion = Relacion_Relacion (Terminos) (B)
 -- semantic domain
-type T_Relacion = ((String))
+type T_Relacion = ()
 -- cata
 sem_Relacion :: (Relacion) ->
                 (T_Relacion)
@@ -813,11 +743,8 @@ sem_Relacion_Relacion :: (T_Terminos) ->
                          (T_B) ->
                          (T_Relacion)
 sem_Relacion_Relacion (_terminos) (_b) =
-    let ( _terminos_cod) =
-            (_terminos )
-        ( _b_cod) =
-            (_b )
-    in  (_terminos_cod ++ _b_cod)
+    let 
+    in  ()
 -- SimpOps -----------------------------------------------------
 {-
    inherited attributes:
@@ -825,7 +752,6 @@ sem_Relacion_Relacion (_terminos) (_b) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -849,7 +775,7 @@ data SimpOps = SimpOps_Sdiv
              | SimpOps_Smenos 
              | SimpOps_Smul 
 -- semantic domain
-type T_SimpOps = ((String))
+type T_SimpOps = ()
 -- cata
 sem_SimpOps :: (SimpOps) ->
                (T_SimpOps)
@@ -864,19 +790,19 @@ sem_SimpOps ((SimpOps_Smul )) =
 sem_SimpOps_Sdiv :: (T_SimpOps)
 sem_SimpOps_Sdiv  =
     let 
-    in  ("/")
+    in  ()
 sem_SimpOps_Smas :: (T_SimpOps)
 sem_SimpOps_Smas  =
     let 
-    in  ("+")
+    in  ()
 sem_SimpOps_Smenos :: (T_SimpOps)
 sem_SimpOps_Smenos  =
     let 
-    in  ("-")
+    in  ()
 sem_SimpOps_Smul :: (T_SimpOps)
 sem_SimpOps_Smul  =
     let 
-    in  ("*")
+    in  ()
 -- Terminos ----------------------------------------------------
 {-
    inherited attributes:
@@ -884,7 +810,6 @@ sem_SimpOps_Smul  =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -893,7 +818,7 @@ sem_SimpOps_Smul  =
 -}
 data Terminos = Terminos_Terminos (Fr) (C)
 -- semantic domain
-type T_Terminos = ((String))
+type T_Terminos = ()
 -- cata
 sem_Terminos :: (Terminos) ->
                 (T_Terminos)
@@ -903,11 +828,8 @@ sem_Terminos_Terminos :: (T_Fr) ->
                          (T_C) ->
                          (T_Terminos)
 sem_Terminos_Terminos (_fr) (_c) =
-    let ( _fr_cod) =
-            (_fr )
-        ( _c_cod) =
-            (_c )
-    in  (_fr_cod ++ _c_cod)
+    let 
+    in  ()
 -- Tipo --------------------------------------------------------
 {-
    inherited attributes:
@@ -915,7 +837,6 @@ sem_Terminos_Terminos (_fr) (_c) =
    chained attributes:
 
    synthesised attributes:
-      cod                  : String
 
 -}
 {-
@@ -929,7 +850,7 @@ sem_Terminos_Terminos (_fr) (_c) =
 data Tipo = Tipo_T1 
           | Tipo_T2 
 -- semantic domain
-type T_Tipo = ((String))
+type T_Tipo = ()
 -- cata
 sem_Tipo :: (Tipo) ->
             (T_Tipo)
@@ -940,9 +861,9 @@ sem_Tipo ((Tipo_T2 )) =
 sem_Tipo_T1 :: (T_Tipo)
 sem_Tipo_T1  =
     let 
-    in  ("Integer")
+    in  ()
 sem_Tipo_T2 :: (T_Tipo)
 sem_Tipo_T2  =
     let 
-    in  ("Real")
+    in  ()
 

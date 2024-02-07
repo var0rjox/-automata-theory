@@ -24,9 +24,11 @@ main = do
        nomF <- getLine
        tokens <-  scanner palabrasClave operadores simbolos opeBasicos nomF
        out <- parseIO pProg tokens  -- une el scanner a parser
-       let (cod,con,d,r,u) = out
-       generar nomF cod
-       putStr (show "Esta es la lista de Declarados:" ++ show d ++"\n")
-       putStr (show "Esta es la lista de Usados:" ++ show u ++"\n")
-       putStr (show "Resultado de Variables no declaradas:" ++ show r ++"\n")
-       putStr (show "Resultado de Contador de declaradas:" ++ show con ++"\n")
+       putStr (show tokens)
+       putStr (show  out)
+      --  let (cod,con,d,r,u) = out
+      -- --  generar nomF cod
+      --  putStr (show "Esta es la lista de Declarados:" ++ show d ++"\n")
+      --  putStr (show "Esta es la lista de Usados:" ++ show u ++"\n")
+      --  putStr (show "Resultado de Variables no declaradas:" ++ show r ++"\n")
+      --  putStr (show "Resultado de Contador de declaradas:" ++ show con ++"\n")
