@@ -1,7 +1,7 @@
 module Main where
 import Scanner
 import UU_Parsing
--- import Atrib
+import Atrib
 import ParserG
 
 
@@ -12,8 +12,8 @@ opeBasicos = "+-*/=()<>!#"
 simbolos = "{};,.\""
 
 generar archivo codigo = do
-                             writeFile ((faux1 archivo)++".java") codigo
-                             putStr ( "Archivo: " ++(faux1 archivo)++".java " ++"generado")
+                             writeFile ((faux1 archivo)++".pas") codigo
+                             putStr ( "Archivo: " ++(faux1 archivo)++".pas " ++"generado")
 
 faux1 ('.':xs)=[]
 faux1 []      =[]

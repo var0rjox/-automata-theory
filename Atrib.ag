@@ -5,6 +5,22 @@ type Instancia2 = Instancia
 type String1 = String
 type String2 = String
 type String3 = String
+
+fVerificar a t@(x:xs) | a `elem` t = True 
+                      | otherwise = False 
+
+recorrido t@(x:xs) (y:ys) = fVerificar y t && recorrido t ys 
+recorrido [] (y:ys) = False 
+recorrido t@(x:xs) [] = True 
+
+
+fencontrar y t@(x:xs) | y `elem` t = [] 
+                      | otherwise = y:[] 
+
+captura t@(x:xs) (y:ys) = fencontrar y t ++ captura t ys 
+captura [] (y:ys) = []
+captura t@(x:xs) [] = [] 
+
 }
 
 DATA Prog | Prog Metodos Main
@@ -16,7 +32,7 @@ DATA Metodo | Metd Instancia Instancia1 Instancia2 CuerpoMet
 
 DATA Instancia | Instancia Tipo String
 
-DATA Instancias | Instancias Instancia Instancia1
+DATA Instancias | Instancias Instancia Instancias
                 | VacioInst
 
 DATA CuerpoMet | CuerpoM Expresion
@@ -61,7 +77,6 @@ DATA OpLog | Opmenor
            | Opmayorigual
            | Opmenorigual
            | Opdistinto
-           | Opigual
 
 DATA SimpOps | Smas
              | Smenos
@@ -90,83 +105,75 @@ ATTR Fr [  |  | d:Lista cod:String]
 ATTR OpLog [  |  | d:Lista cod:String]
 ATTR SimpOps [  |  | d:Lista cod:String]
 
-SEM -- Prog Prog Metodos Main
+SEM
 | Prog  lhs.r = captura @decls.d @intrs.u
       lhs.d = @decls.d 
       lhs.u = @intrs.u
       lhs.cod = "program Pascal;" ++ "\n\n" ++ @metodos.cod  ++ "\n\n"++ @main.cod
 
-SEM Metodos -- Metodo Metodos
-| Metds  lhs.r = @metodo.r ++ @metodos.r
-        lhs.d = @metodo.d ++ @metodos.d
-        lhs.cod = @metodo.cod ++ @metodos.cod
-| VacioMet  lhs.r = ""
-           lhs.d = ""
-           lhs.cod = ""
+SEM Metodos
+| Metds  lhs.cod = @metodo.cod ++ @metodos.cod
+| VacioMet lhs.cod = ""
 
-SEM Metodo Instancia Instancia1 Instancia2 CuerpoMet
-| Metd lhs.cod = "function" ++ @instancia.string ++ " ("++ @instancia1.string ", " ++ @instancia2.string ++ ")" @cuerpomet.cod ++ "\n\n"
+SEM Metodo
+| Metd lhs.cod = "function " ++ @instancia.string ++ " (" ++ @instancia.string ++ ":" ++ @instancia.tipo ++ ") \n begin \n" ++ @cuerpomet.cod ++ "end; \n\n"
 
-SEM Instancia Tipo String
-| Instancia lhs.cod = @string ++ " : "++ @tipo.cod ++ " ;"
+SEM Instancia
+| Instancia lhs.cod = @string ++ " : "++ @tipo.cod
 
 SEM Instancias 
-| Instancias Instancia Instancia1
-lhs.d = @tipo.string 
-| VacioInst
+| Instancias lhs.cod = @instancia.cod ++ " ;" ++ @instancias.cod
+| VacioInst lhs.cod = ""
 
 SEM CuerpoMet 
-| CuerpoM Expresion
-| CuerpoMCondicional Expresion Funciones Expresion
+| CuerpoM lhs.cod = @expresion.cod
+| CuerpoMCondicional lhs.cod = "if " ++ @expresion.cod ++ "then \n begin \n " @funciones.cod ++ "\n end \n  else \n  begin \n    " @expresion.cod ++ "\n  end;"
 
 SEM Funciones 
-| Funciones --Funcion Funciones
-lhs.cod = @funcion.cod ++ " ;" ++@funciones.cod
+| Funciones lhs.cod = @funcion.cod ++ " ;" ++ @funciones.cod
 | VacioFuncs lhs.cod = ""
 
 SEM Funcion
-| Funcion1 String Mostrar
-lhs.cod = "WriteLn(" ++ @string ++ @mostrar.cod ++ ")"
-| Funcion2 String
-| Funcion3 Instancia String String1 String2
+| Funcion1 lhs.cod = "WriteLn( '" ++ @string ++ @mostrar.cod ++ "')"
+| Funcion2 lhs.cod = "ReadLn(" ++ @string ++ ")"
+| Funcion3 lhs.cod = @instancia.string ++ " := " ++ @string ++ "(" ++ @string ++ ", " ++ @string ++ ")"
 
 SEM Mostrar
-| Mostrar --String 
-lhs.cod = ","++ @string
+| Mostrar lhs.cod = "," ++ @string
 | MostrarVacio lhs.cod = ""
 
 SEM Main 
-| Main --Instancias Funciones Int
+| Main lhs.cod = "var \n " ++ @instancias.cod ++ " \n begin \n " ++ @funciones.cod ++ " \n end."
 
 SEM Tipo 
 | T1 lhs.cod = "Integer"
 | T2 lhs.cod = "Real"
 
 SEM Expresion 
-| Expresion --Relacion A
+| Expresion lhs.cod = @relacion.cod ++ @a.cod
 
 SEM A 
-| A Oplog --Expresion
-| AVacio
+| A lhs.cod = @oplog.cod ++ @expresion.cod
+| AVacio lhs.cod = ""
 
 SEM Relacion 
-| Relacion --Terminos B
+| Relacion lhs.cod =  @terminos.cod ++ @b.cod
 
 SEM B 
-| B --SimpOps Relacion
-| BVacio
+| B lhs.cod = @simpops.cod ++ @relacion.cod
+| BVacio lhs.cod = ""
 
 SEM C 
-| C --SimpOps Terminos
-| CVacio
+| C lhs.cod = @simpops.cod ++ @terminos.cod
+| CVacio lhs.cod = ""
 
 SEM Terminos 
-| Terminos --Fr C
+| Terminos lhs.cod = @fr.cod ++ @c.cod
 
 SEM Fr 
-| Fr --Expresion
-| Fr1 --String
-| Fr2 --Int
+| Fr lhs.cod = "(" ++ @expresion.cod ++ ")"
+| Fr1 lhs.cod = @string
+| Fr2 lhs.cod = @int
 
 SEM OpLog 
 | Opmenor lhs.cod = "<"
@@ -174,7 +181,6 @@ SEM OpLog
 | Opmayorigual lhs.cod = ">="
 | Opmenorigual lhs.cod = "<="
 | Opdistinto lhs.cod = "<>"
-| Opigual lhs.cod = "="
 
 SEM SimpOps 
 | Smas lhs.cod = "+"

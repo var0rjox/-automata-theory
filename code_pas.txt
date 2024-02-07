@@ -37,10 +37,10 @@ var
    resultadoDiv: Real;
 
 begin
-  Write('Ingrese el primer número: ');
+  WriteLn('Ingrese el primer número: ');
   ReadLn(num1);
 
-  Write('Ingrese el segundo número: ');
+  WriteLn('Ingrese el segundo número: ');
   ReadLn(num2);
 
   resultadoSum := Sumar(num1, num2);
